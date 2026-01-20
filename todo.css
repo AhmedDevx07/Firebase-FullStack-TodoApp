@@ -1,0 +1,243 @@
+:root {
+  --primary: #8b5cf6;
+  --bg-dark: #0f172a;
+  --sidebar-bg: #1e293b;
+  --input-bg: #1e293b;
+  --card-bg: #1e293b;
+  --text-main: #f1f5f9;
+  --text-dim: #94a3b8;
+  --border-glass: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+}
+
+.navbar {
+  background: var(--bg-dark);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.brand-logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--primary);
+  letter-spacing: -1px;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: calc(100vh - 72px);
+}
+
+.sidebar {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 30px;
+  background: var(--bg-dark);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content-area {
+  flex: 0 0 75%;
+  max-width: 75%;
+  padding: 30px;
+  background: #0f172a;
+}
+
+@media (max-width: 992px) {
+  .sidebar,
+  .content-area {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}
+
+.form-card {
+  position: sticky;
+  top: 100px;
+}
+.text-muted {
+  color: rgba(255, 255, 255, 0.905) !important;
+  padding: 8px;
+}
+.custom-input {
+  border: 1px solid #475569;
+  background: var(--card-bg);
+  color: white;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+
+.custom-input:focus {
+  background: #334155;
+  color: white;
+  border-color: var(--primary);
+}
+.custom-input::placeholder {
+  color: #c7d1df;
+}
+
+.btn-logout {
+  color: #ffffff;
+
+  padding: 5px 15px;
+  border-radius: 8px;
+  background-color: var(--primary);
+}
+.btn-logout:hover {
+  color: #ffffff;
+
+  padding: 5px 15px;
+  border-radius: 8px;
+  background-color: var(--primary);
+}
+
+.btn-tick {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-tick.active {
+  background: var(--primary);
+  color: white;
+}
+.task-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+.task-card.completed {
+  opacity: 0.6;
+  border-left: 5px solid var(--primary);
+}
+
+.task-card.completed h5 {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+#submitBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  width: 100%;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+#submitBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+}
+#update_data {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  width: 100%;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+#update_data:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+}
+
+.tag-work {
+  background: var(--primary);
+  color: #ffffff;
+}
+.tag-personal {
+  background: var(--primary);
+  color: #ffffff;
+}
+.tag-urgent {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.desc-text {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.btn-edit {
+  color: var(--primary);
+  background: #eef2ff;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.action-icon {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.badge {
+  background-color: var(--primary);
+}
+.show {
+  display: block;
+}
+
+#update_data {
+  display: none;
+}
+
+#update_data.show {
+  display: block !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}

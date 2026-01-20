@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTodo | Advanced Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg-light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #1e293b;
+        }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -1px; }
+
+        /* --- LAYOUT --- */
+        .main-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* Left Side (Input) */
+        .sidebar {
+            flex: 0 0 25%;
+            max-width: 25%;
+            padding: 30px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        /* Right Side (Data) */
+        .content-area {
+            flex: 0 0 75%;
+            max-width: 75%;
+            padding: 30px;
+            background: #f1f5f9;
+        }
+
+        /* Responsive Fix */
+        @media (max-width: 992px) {
+            .sidebar, .content-area {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            .sidebar { border-right: none; border-bottom: 1px solid #e2e8f0; }
+        }
+
+        /* --- UI COMPONENTS --- */
+        .form-card {
+            position: sticky;
+            top: 100px;
+        }
+
+        .custom-input {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .custom-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-create {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-create:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4); }
+
+        /* TASK CARDS */
+        .task-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .task-card:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .tag-work { background: #e0e7ff; color: #4338ca; }
+        .tag-personal { background: #dcfce7; color: #15803d; }
+        .tag-urgent { background: #fee2e2; color: #b91c1c; }
+
+        .desc-text { color: #64748b; font-size: 0.9rem; margin-top: 8px; }
+
+        .btn-edit {
+            color: var(--primary);
+            background: #eef2ff;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .fa-trash:hover { background: #fee2e2; color: #ef4444; }
+        .fa-check:hover { background: #dcfce7; color: #22c55e; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar d-flex justify-content-between align-items-center">
+        <div class="brand-logo"><i class="fas fa-layer-group me-2"></i>TaskFlow</div>
+        <button class="btn btn-outline-danger btn-sm border-0 fw-bold">
+            <i class="fas fa-power-off me-2"></i>Logout
+        </button>
+    </nav>
+
+    <div class="main-wrapper">
+        <aside class="sidebar">
+            <div class="form-card">
+                <h4 class="fw-bold mb-4">New Task</h4>
+                <input type="hidden" id="editIndex" value="-1">
+                
+                <label class="small fw-bold text-muted">Title</label>
+                <input type="text" id="taskTitle" class="form-control custom-input" placeholder="Enter task title">
+                
+                <label class="small fw-bold text-muted">Category</label>
+                <select id="taskCategory" class="form-select custom-input">
+                    <option value="Work">Work</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+
+                <label class="small fw-bold text-muted">Description</label>
+                <textarea id="taskDesc" class="form-control custom-input" rows="4" placeholder="Briefly describe the task..."></textarea>
+
+                <button class="btn-create" id="submitBtn" onclick="handleTask()">
+                    <i class="fas fa-plus-circle me-2"></i>Save Task
+                </button>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Tasks Dashboard</h2>
+                <div id="statusCount" class="badge bg-dark rounded-pill px-3 py-2">0 Total</div>
+            </div>
+
+            <div id="taskGrid" class="row">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('proTasks')) || [];
+
+        function render() {
+            const grid = document.getElementById('taskGrid');
+            const count = document.getElementById('statusCount');
+            grid.innerHTML = '';
+            count.innerText = `${tasks.length} Total Tasks`;
+
+            tasks.forEach((task, index) => {
+                const catClass = `tag-${task.category.toLowerCase()}`;
+                grid.innerHTML += `
+                    <div class="col-xl-6 col-12">
+                        <div class="task-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="tag ${catClass}">${task.category}</span>
+                                 
+                            </div>
+                            <h5 class="fw-bold mb-1" style="${task.done ? 'text-decoration: line-through' : ''}">${task.title}</h5>
+                            <p class="desc-text">${task.desc}</p>
+                            <div class="mt-4 border-top pt-3 d-flex justify-content-between align-items-center">
+                                <button class="btn-edit" onclick="editTask(${index})">
+                                    <i class="fas fa-edit me-1"></i> Edit Task
+                                </button>
+                                <button class="btn-edit"  onclick="deleteTask(${index})">
+                                    <i class="fas  fa-trash me-1"></i> Delete Task
+                                </button>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            localStorage.setItem('proTasks', JSON.stringify(tasks));
+        }
+
+        function handleTask() {
+            const title = document.getElementById('taskTitle').value;
+            const category = document.getElementById('taskCategory').value;
+            const desc = document.getElementById('taskDesc').value;
+            const editIndex = document.getElementById('editIndex').value;
+
+            if(!title || !desc) return alert("Please fill title and description!");
+
+            const taskObj = { title, category, desc, done: false };
+
+            if(editIndex == "-1") {
+                tasks.unshift(taskObj); // Add new
+            } else {
+                tasks[editIndex] = taskObj; // Update existing
+                document.getElementById('editIndex').value = "-1";
+                document.getElementById('submitBtn').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Save Task';
+            }
+
+            resetForm();
+            render();
+        }
+
+        function editTask(index) {
+            const task = tasks[index];
+            document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskCategory').value = task.category;
+            document.getElementById('taskDesc').value = task.desc;
+            document.getElementById('editIndex').value = index;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save me-2"></i>Update Task';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            render();
+        }
+
+        function toggleTask(index) {
+            tasks[index].done = !tasks[index].done;
+            render();
+        }
+
+        function resetForm() {
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDesc').value = '';
+        }
+
+        render();
+    </script>
+</body>
+</html>
