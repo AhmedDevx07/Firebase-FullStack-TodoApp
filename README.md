@@ -55,4 +55,17 @@ A **modern, real-time Todo App** built with **Firebase** and **Vanilla JS / Boot
 * Add **dark mode toggle**
 * Integrate **analytics & reports**
 
+ ---
+
  
+  ## 👨‍💻 Author
+
+**Muhammad Ahmed (AhmedDevx07)**
+🚀 Full Stack MERN Developer
+🎨 Passionate about Modern UI/UX & Scalable Web Apps
+
+### 🌐 Connect With Me
+
+* 🐙 GitHub: https://github.com/AhmedDevx07
+* 💼 LinkedIn: https://linkedin.com/in/ahmeddevx07
+
